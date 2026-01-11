@@ -2,32 +2,56 @@
 {% block content %}
 
 <div class="mb-4">
-    <h1 class="fw-bold">История пробежек</h1>
-    <p class="text-muted">Тут пока без API — отображаем созданные планы.</p>
+    <h1 class="fw-bold">Мои рекомендации</h1>
+    <p class="text-muted">История тренировок и оценка рисков пробежек.</p>
 </div>
 
-<div class="card">
+<div class="card mb-4">
     <div class="card-body">
+        <h5 class="card-title mb-3">График уровня риска</h5>
+        {{ graph|safe }}
+    </div>
+</div>
+
+<div class="card mb-4">
+    <div class="card-body">
+        <h5 class="card-title mb-3">История рекомендаций</h5>
+
         <ul class="list-group list-group-flush">
-            {% for plan in recommendations %}
-                <li class="list-group-item d-flex justify-content-between align-items-center">
+            {% for r in recommendations %}
+                <li class="list-group-item d-flex justify-content-between align-items-start">
                     <div>
-                        <div class="fw-semibold">{{ plan.planned_start }}</div>
-                        <div class="text-muted small">
-                            {{ plan.get_intensity_display }} • {{ plan.duration_min }} минут
-                        </div>
+                        <div class="fw-semibold">{{ r.run_plan.planned_start }}</div>
+                        <div class="text-muted small">{{ r.explanation }}</div>
                     </div>
-                    <span class="badge bg-secondary rounded-pill">OK</span>
+
+                    {% if r.risk_level == "low" %}
+                        <span class="badge bg-success rounded-pill">
+                            {{ r.risk_score }} · низкий
+                        </span>
+                    {% elif r.risk_level == "medium" %}
+                        <span class="badge bg-warning text-dark rounded-pill">
+                            {{ r.risk_score }} · средний
+                        </span>
+                    {% else %}
+                        <span class="badge bg-danger rounded-pill">
+                            {{ r.risk_score }} · высокий
+                        </span>
+                    {% endif %}
                 </li>
             {% empty %}
-                <li class="list-group-item text-muted">Планов пока нет</li>
+                <li class="list-group-item text-muted">
+                    Рекомендаций пока нет
+                </li>
             {% endfor %}
         </ul>
     </div>
 </div>
 
-<div class="mt-4">
-    <a href="/run/create/" class="btn btn-royal btn-lg">➕ Создать план</a>
+<div class="mb-5">
+    <a href="/run/create/" class="btn btn-royal btn-lg">
+        ➕ Создать план пробежки
+    </a>
 </div>
 
 {% endblock %}

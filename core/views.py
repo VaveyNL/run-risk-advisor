@@ -1,9 +1,11 @@
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import login
 from django.shortcuts import render, redirect
+from django.contrib.auth.forms import AuthenticationForm
 
-from .models import UserProfile
-from .forms import RunPlanForm, ProfileForm, LoginForm
+from .models import UserProfile, Recommendation
+from .forms import RunPlanForm, ProfileForm
+from .utils import build_risk_graph
 
 
 def index(request):
@@ -16,12 +18,12 @@ def about(request):
 
 def login_view(request):
     if request.method == "POST":
-        form = LoginForm(request, data=request.POST)
+        form = AuthenticationForm(request, data=request.POST)
         if form.is_valid():
             login(request, form.get_user())
             return redirect("/")
     else:
-        form = LoginForm()
+        form = AuthenticationForm()
 
     return render(request, "core/login.html", {"form": form})
 
@@ -61,10 +63,14 @@ def create_run_plan(request):
 def recommendation_list(request):
     profile, _ = UserProfile.objects.get_or_create(user=request.user)
 
-    recommendations = profile.run_plans.all().order_by("-planned_start")
+    recommendations = Recommendation.objects.filter(
+        run_plan__profile=profile
+    ).select_related("run_plan").order_by("run_plan__planned_start")
+
+    graph = build_risk_graph(recommendations)
 
     return render(
         request,
         "core/recommendation_list.html",
-        {"recommendations": recommendations},
+        {"recommendations": recommendations, "graph": graph},
     )
