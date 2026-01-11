@@ -12,8 +12,13 @@ load_dotenv()
 
 
 SECRET_KEY = os.getenv("DJANGO_SECRET_KEY", "django-insecure-change-me")
-DEBUG = True
-ALLOWED_HOSTS = []
+DEBUG = os.getenv("DJANGO_DEBUG", "0") == "1"
+ALLOWED_HOSTS = [
+    "127.0.0.1",
+    "localhost",
+    "Vavey.pythonanywhere.com",
+]
+
 
 
 INSTALLED_APPS = [
@@ -101,3 +106,5 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 
 OPENWEATHER_API_KEY = os.getenv("OPENWEATHER_API_KEY", "")
+
+STATIC_ROOT = BASE_DIR / "staticfiles"
