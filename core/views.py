@@ -1,5 +1,5 @@
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth import login
+from django.contrib.auth import login, logout
 from django.shortcuts import render, redirect
 from django.contrib.auth.forms import AuthenticationForm
 
@@ -17,15 +17,22 @@ def about(request):
 
 
 def login_view(request):
+    next_url = request.GET.get("next") or "/"
+
     if request.method == "POST":
         form = AuthenticationForm(request, data=request.POST)
         if form.is_valid():
             login(request, form.get_user())
-            return redirect("/")
+            return redirect(request.POST.get("next") or "/")
     else:
         form = AuthenticationForm()
 
-    return render(request, "core/login.html", {"form": form})
+    return render(request, "core/login.html", {"form": form, "next": next_url})
+
+
+def logout_view(request):
+    logout(request)
+    return redirect("/")
 
 
 @login_required
@@ -36,6 +43,7 @@ def profile(request):
         form = ProfileForm(request.POST, instance=profile)
         if form.is_valid():
             form.save()
+            return redirect("/profile/")
     else:
         form = ProfileForm(instance=profile)
 
@@ -63,9 +71,11 @@ def create_run_plan(request):
 def recommendation_list(request):
     profile, _ = UserProfile.objects.get_or_create(user=request.user)
 
-    recommendations = Recommendation.objects.filter(
-        run_plan__profile=profile
-    ).select_related("run_plan").order_by("run_plan__planned_start")
+    recommendations = (
+        Recommendation.objects.filter(run_plan__profile=profile)
+        .select_related("run_plan")
+        .order_by("run_plan__planned_start")
+    )
 
     graph = build_risk_graph(recommendations)
 

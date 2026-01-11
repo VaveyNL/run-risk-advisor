@@ -1,7 +1,14 @@
 from django.contrib import admin
 from django.urls import path, include
+from core import views as core_views
 
 urlpatterns = [
     path("admin/", admin.site.urls),
+
+    path("accounts/login/", core_views.login_view, name="login"),
+    path("accounts/logout/", core_views.logout_view, name="logout"),
+
+    path("accounts/", include("django.contrib.auth.urls")),
+
     path("", include("core.urls")),
 ]
