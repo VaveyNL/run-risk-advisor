@@ -4,22 +4,12 @@ import os
 from dotenv import load_dotenv
 from django.utils.translation import gettext_lazy as _
 
-
 BASE_DIR = Path(__file__).resolve().parent.parent
-
-
-load_dotenv()
-
+load_dotenv(BASE_DIR / ".env")
 
 SECRET_KEY = os.getenv("DJANGO_SECRET_KEY", "django-insecure-change-me")
 DEBUG = os.getenv("DJANGO_DEBUG", "0") == "1"
-ALLOWED_HOSTS = [
-    "127.0.0.1",
-    "localhost",
-    "Vavey.pythonanywhere.com",
-]
-
-
+ALLOWED_HOSTS = os.getenv("ALLOWED_HOSTS", "127.0.0.1,localhost").split(",")
 
 INSTALLED_APPS = [
     "django.contrib.admin",
@@ -28,13 +18,12 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
-
     "core.apps.CoreConfig",
 ]
 
-
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
+    "whitenoise.middleware.WhiteNoiseMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.locale.LocaleMiddleware",
     "django.middleware.common.CommonMiddleware",
@@ -43,7 +32,6 @@ MIDDLEWARE = [
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
-
 
 ROOT_URLCONF = "config.urls"
 
@@ -60,11 +48,10 @@ TEMPLATES = [
                 "django.contrib.messages.context_processors.messages",
             ],
         },
-    },
+    }
 ]
 
 WSGI_APPLICATION = "config.wsgi.application"
-
 
 DATABASES = {
     "default": {
@@ -73,14 +60,12 @@ DATABASES = {
     }
 }
 
-
 AUTH_PASSWORD_VALIDATORS = [
     {"NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator"},
     {"NAME": "django.contrib.auth.password_validation.MinimumLengthValidator"},
     {"NAME": "django.contrib.auth.password_validation.CommonPasswordValidator"},
     {"NAME": "django.contrib.auth.password_validation.NumericPasswordValidator"},
 ]
-
 
 LANGUAGE_CODE = "ru"
 
@@ -97,14 +82,11 @@ TIME_ZONE = "UTC"
 USE_I18N = True
 USE_TZ = True
 
-
 STATIC_URL = "/static/"
 STATICFILES_DIRS = [BASE_DIR / "static"]
-
+STATIC_ROOT = BASE_DIR / "staticfiles"
+STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
-
 OPENWEATHER_API_KEY = os.getenv("OPENWEATHER_API_KEY", "")
-
-STATIC_ROOT = BASE_DIR / "staticfiles"
