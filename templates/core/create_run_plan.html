@@ -1,11 +1,17 @@
-<!DOCTYPE html>
-<html lang="ru">
-<head>
-    <meta charset="UTF-8">
-    <title>План пробежки</title>
-</head>
-<body>
-<h1>Создание плана пробежки</h1>
-<p>Форма создания плана появится здесь.</p>
-</body>
-</html>
+{% extends "core/base.html" %}
+{% block content %}
+
+<h1 class="fw-bold mb-4">Создание плана пробежки</h1>
+
+<div class="card p-4">
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+
+        <button type="submit" class="btn btn-royal">
+            Создать
+        </button>
+    </form>
+</div>
+
+{% endblock %}

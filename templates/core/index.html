@@ -1,11 +1,52 @@
-<!DOCTYPE html>
-<html lang="ru">
-<head>
-    <meta charset="UTF-8">
-    <title>Run Risk Advisor</title>
-</head>
-<body>
-<h1>Главная страница</h1>
-<p>Проект создаётся...</p>
-</body>
-</html>
+{% extends "core/base.html" %}
+{% block content %}
+
+<div class="text-center mb-5">
+    <h1 class="display-4 fw-bold">
+        Бегай умнее вместе с Run Risk Advisor
+    </h1>
+
+    <p class="lead mt-3 text-muted">
+        Планы тренировок и рекомендации по риску на основе интенсивности и погодных условий.
+    </p>
+
+    <div class="mt-4">
+        <a href="/run/create/" class="btn btn-royal btn-lg me-2">
+            Создать план пробежки
+        </a>
+        <a href="/recommendations/" class="btn btn-outline-secondary btn-lg">
+            Моя история
+        </a>
+    </div>
+</div>
+
+<div class="row text-center g-4">
+    <div class="col-md-4">
+        <div class="card p-4 h-100">
+            <h4>📊 Анализ риска</h4>
+            <p class="text-muted mb-0">
+                Считаем риск тренировки по интенсивности и длительности.
+            </p>
+        </div>
+    </div>
+
+    <div class="col-md-4">
+        <div class="card p-4 h-100">
+            <h4>🏃 Умные планы</h4>
+            <p class="text-muted mb-0">
+                Получай понятные рекомендации под твоё состояние.
+            </p>
+        </div>
+    </div>
+
+    <div class="col-md-4">
+        <div class="card p-4 h-100">
+            <h4>🌦 Учет погоды</h4>
+            <p class="text-muted mb-0">
+                Интеграция с OpenWeather API для погодного фактора риска.
+            </p>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

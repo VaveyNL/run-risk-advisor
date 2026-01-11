@@ -1,11 +1,16 @@
-<!DOCTYPE html>
-<html lang="ru">
-<head>
-    <meta charset="UTF-8">
-    <title>О проекте</title>
-</head>
-<body>
-<h1>О проекте</h1>
-<p>Run Risk Advisor — сервис оценки рисков пробежки.</p>
-</body>
-</html>
+{% extends "core/base.html" %}
+{% block content %}
+
+<h1 class="fw-bold mb-3">О проекте</h1>
+
+<p class="text-muted">
+    Run Risk Advisor — это учебный веб-сервис для оценки рисков пробежек.
+</p>
+
+<ul class="mt-4">
+    <li>Расчёт риска на основе интенсивности тренировки</li>
+    <li>Учет погодных условий через внешнее API</li>
+    <li>История тренировок пользователя</li>
+</ul>
+
+{% endblock %}

@@ -1,11 +1,33 @@
-<!DOCTYPE html>
-<html lang="ru">
-<head>
-    <meta charset="UTF-8">
-    <title>Рекомендации</title>
-</head>
-<body>
-<h1>Мои рекомендации</h1>
-<p>История рекомендаций появится здесь.</p>
-</body>
-</html>
+{% extends "core/base.html" %}
+{% block content %}
+
+<div class="mb-4">
+    <h1 class="fw-bold">История пробежек</h1>
+    <p class="text-muted">Тут пока без API — отображаем созданные планы.</p>
+</div>
+
+<div class="card">
+    <div class="card-body">
+        <ul class="list-group list-group-flush">
+            {% for plan in recommendations %}
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                    <div>
+                        <div class="fw-semibold">{{ plan.planned_start }}</div>
+                        <div class="text-muted small">
+                            {{ plan.get_intensity_display }} • {{ plan.duration_min }} минут
+                        </div>
+                    </div>
+                    <span class="badge bg-secondary rounded-pill">OK</span>
+                </li>
+            {% empty %}
+                <li class="list-group-item text-muted">Планов пока нет</li>
+            {% endfor %}
+        </ul>
+    </div>
+</div>
+
+<div class="mt-4">
+    <a href="/run/create/" class="btn btn-royal btn-lg">➕ Создать план</a>
+</div>
+
+{% endblock %}

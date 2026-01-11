@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="ru" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <title>Run Risk Advisor</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <style>
+        :root{
+            --royal-blue:#1f3cff;
+            --royal-blue-dark:#162db8;
+
+            --bg-light:#f4f6ff;
+            --bg-dark:#0b0d1c;
+
+            --card-dark:#151835;
+
+            --text-light:#0b0d1c;
+            --text-dark:#eaeaff;
+
+            --muted-light:#566079;
+            --muted-dark: rgba(234,234,255,.72);
+        }
+
+        html[data-theme="light"] body { background: var(--bg-light); color: var(--text-light); }
+        html[data-theme="dark"] body  { background: var(--bg-dark);  color: var(--text-dark);  }
+
+        .navbar { background: linear-gradient(90deg, var(--royal-blue), var(--royal-blue-dark)); }
+
+        .card {
+            border-radius: 18px;
+            border: none;
+            box-shadow: 0 10px 30px rgba(31, 60, 255, 0.10);
+        }
+
+        html[data-theme="dark"] .card { background: var(--card-dark); color: var(--text-dark); }
+
+        html[data-theme="light"] .text-muted { color: var(--muted-light) !important; }
+        html[data-theme="dark"]  .text-muted { color: var(--muted-dark) !important; }
+
+        .btn-royal { background-color: var(--royal-blue); color: white; border: none; }
+        .btn-royal:hover { background-color: var(--royal-blue-dark); color: white; }
+
+        a { text-decoration: none; }
+
+        .nav-link-lite { color:#fff; opacity:.95; }
+        .nav-link-lite:hover { opacity:1; text-decoration: underline; }
+    </style>
+</head>
+
+<body>
+
+<nav class="navbar navbar-dark">
+    <div class="container d-flex justify-content-between align-items-center">
+        <a href="/" class="text-white text-decoration-none">
+            <strong class="fs-4">Run Risk Advisor</strong>
+        </a>
+
+        <div class="d-flex align-items-center gap-3">
+            <a class="nav-link-lite" href="/about/">О проекте</a>
+
+            {% if user.is_authenticated %}
+                <a class="nav-link-lite" href="/profile/">Профиль</a>
+                <a class="nav-link-lite" href="/run/create/">Создать план</a>
+                <a class="nav-link-lite" href="/recommendations/">История</a>
+                <a class="nav-link-lite" href="/logout/">Выйти</a>
+            {% else %}
+                <a class="nav-link-lite" href="/login/">Войти</a>
+            {% endif %}
+
+            <button class="btn btn-sm btn-outline-light" onclick="toggleTheme()" title="Тема">🌙</button>
+        </div>
+    </div>
+</nav>
+
+<div class="container my-5">
+    {% block content %}{% endblock %}
+</div>
+
+<script>
+    function toggleTheme() {
+        const html = document.documentElement;
+        const next = html.getAttribute("data-theme") === "light" ? "dark" : "light";
+        html.setAttribute("data-theme", next);
+        localStorage.setItem("theme", next);
+    }
+
+    (function () {
+        const savedTheme = localStorage.getItem("theme") || "dark";
+        document.documentElement.setAttribute("data-theme", savedTheme);
+    })();
+</script>
+
+</body>
+</html>
