@@ -57,9 +57,9 @@ class UserProfile(models.Model):
 
 class RunPlan(models.Model):
     INTENSITY_CHOICES = [
-        ("easy", "Лёгкая"),
-        ("tempo", "Темповая"),
-        ("interval", "Интервальная"),
+        ("low", "Маленькая"),
+        ("medium", "Средняя"),
+        ("high", "Высокая"),
     ]
 
     profile = models.ForeignKey(
